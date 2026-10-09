@@ -58,7 +58,7 @@
   #heartFill.on { opacity:1; }
 
   /* escena: tortuga + murciélago */
-  .scene { opacity:0; }
+  .scene { opacity:0; pointer-events:none; }
   .grow .scene { opacity:1; transition:opacity .5s; }
   .turtle { transform:translateX(-30px); }
   .grow .turtle { animation:arrive 1.6s .2s cubic-bezier(.3,.9,.4,1) forwards; }
