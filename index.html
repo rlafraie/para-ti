@@ -15,6 +15,26 @@
          font-family:Inter, system-ui, sans-serif; touch-action:manipulation; }
   .serif { font-family:Fraunces, Georgia, serif; }
 
+  /* amanecer + skyline de Montjuïc */
+  body { background:linear-gradient(180deg, #0b1026 0%, #1b2350 45%, #4a3a6e 72%, #b8667a 92%, #e8956f 100%); }
+  .dawn { position:fixed; inset:0; pointer-events:none; opacity:0; transition:opacity 5s ease;
+          background:linear-gradient(180deg, #2e3a7a 0%, #6b5ea8 38%, #d98a9a 66%, #f7b98a 85%, #ffd9a0 100%); }
+  body.morning .dawn { opacity:1; }
+  body.morning .bgstar { opacity:0 !important; transition:opacity 4s; }
+  .skyline { position:fixed; left:0; right:0; bottom:0; width:100%; height:34vh; pointer-events:none; }
+  .skyline .hill { fill:#1c1f4a; transition:fill 5s; }
+  .skyline .land { fill:#23275a; transition:fill 5s; }
+  .skyline .front { fill:#0c0e24; transition:fill 5s; }
+  body.morning .skyline .hill { fill:#5a4a7e; }
+  body.morning .skyline .land { fill:#6a5788; }
+  body.morning .skyline .front { fill:#2d2446; }
+  .skyline .win { fill:#ffd27a; transition:opacity 3s; }
+  body.morning .skyline .win { opacity:.25; }
+  .sun { transform:translateY(0); transition:transform 6s cubic-bezier(.2,.7,.3,1); }
+  body.morning .sun { transform:translateY(-78px); }
+  .cabin { animation:cable 18s ease-in-out infinite alternate; }
+  @keyframes cable { from { transform:translate(0,0); } to { transform:translate(40px,-23px); } }
+
   /* cielo de fondo */
   .bgstar { position:fixed; border-radius:50%; background:#fff; animation:twinkle var(--t) ease-in-out infinite; animation-delay:var(--d); }
   @keyframes twinkle { 50% { opacity:.15; } }
@@ -84,7 +104,7 @@
   .ending { opacity:0; transition:opacity 1.2s; pointer-events:none; }
   .ending.on { opacity:1; pointer-events:auto; }
   .ticket { margin:10px auto 0; max-width:320px; border:1.5px dashed rgba(243,207,122,.6); border-radius:14px;
-            padding:12px 16px; background:rgba(243,207,122,.06); }
+            padding:12px 16px; background:rgba(11,16,38,.55); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
   .ticket small { display:block; letter-spacing:.2em; font-size:.68rem; color:var(--gold); }
   .ticket b { display:block; font-family:Fraunces, Georgia, serif; font-weight:600; font-size:1.1rem; margin:4px 0; }
   .ticket span { font-size:.8rem; color:var(--muted); }
@@ -93,17 +113,52 @@
 </head>
 <body>
 
+<div class="dawn"></div>
+<svg class="skyline" viewBox="0 0 400 200" preserveAspectRatio="xMidYMax slice" aria-label="Montjuïc visto desde Poble Sec">
+  <defs><radialGradient id="sunglow"><stop offset=".45" stop-color="#ffd27a"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient></defs>
+  <g class="sun"><circle cx="235" cy="120" r="34" fill="url(#sunglow)" opacity=".7"/><circle cx="235" cy="120" r="14" fill="#ffe2a0"/></g>
+  <!-- Montjuïc -->
+  <path class="hill" d="M0 118 Q50 100 110 96 Q170 84 220 70 Q270 56 320 50 Q370 50 400 62 L400 200 L0 200Z"/>
+  <!-- Palau Nacional -->
+  <g class="land" transform="translate(22 2)">
+    <rect x="58" y="88" width="52" height="12"/><rect x="72" y="82" width="24" height="7"/>
+    <ellipse cx="84" cy="81" rx="9" ry="7.5"/><rect x="82.6" y="70" width="2.8" height="5"/><circle cx="84" cy="69" r="1.4"/>
+    <rect x="61" y="76" width="4" height="13"/><path d="M60.5 76 L63 71 L65.5 76Z"/>
+    <rect x="103" y="76" width="4" height="13"/><path d="M102.5 76 L105 71 L107.5 76Z"/>
+    <rect x="72" y="77" width="2.6" height="6"/><rect x="93.4" y="77" width="2.6" height="6"/>
+  </g>
+  <!-- Torre Calatrava -->
+  <g class="land">
+    <path d="M160 92 Q157 70 166 44 L169 45 Q162 70 165 92Z"/>
+    <ellipse cx="166.5" cy="52" rx="7" ry="2.2" transform="rotate(-18 166.5 52)" fill="none" stroke="#23275a" stroke-width="1.8" class="land"/>
+  </g>
+  <path d="M167 45 L176 12" stroke="#2a2f66" stroke-width="1.3"/>
+  <!-- Castell de Montjuïc -->
+  <g class="land" transform="translate(-24 5)">
+    <path d="M292 52 L295 42 L306 42 L308 38 L338 38 L340 42 L351 42 L354 52Z"/>
+    <rect x="297" y="39" width="3" height="3"/><rect x="303" y="39" width="3" height="3"/><rect x="340" y="39" width="3" height="3"/><rect x="346" y="39" width="3" height="3"/>
+    <rect x="311" y="35" width="3" height="3"/><rect x="318" y="35" width="3" height="3"/><rect x="325" y="35" width="3" height="3"/><rect x="332" y="35" width="3" height="3"/>
+    <rect x="322.4" y="22" width="1" height="16"/>
+  </g>
+  <g transform="translate(299.4 27)"><rect width="8" height="5" fill="#f2c84b"/><rect y="1" width="8" height=".7" fill="#c8102e"/><rect y="2.2" width="8" height=".7" fill="#c8102e"/><rect y="3.4" width="8" height=".7" fill="#c8102e"/></g>
+  <!-- Telefèric -->
+  <path d="M206 104 L276 64" stroke="#2a2f66" stroke-width=".7"/>
+  <g class="cabin"><path d="M228 93.7 L228 97" stroke="#2a2f66" stroke-width=".7"/><rect x="224.5" y="97" width="7" height="5.5" rx="1.4" fill="#c8102e"/><rect x="225.8" y="98.2" width="4.4" height="2" rx=".5" fill="#ffd27a" opacity=".8"/></g>
+  <!-- Poble Sec: tejados -->
+  <g id="roofs"></g>
+</svg>
+
 <section class="screen on" id="intro">
-  <div class="moon">🌙</div>
-  <h1>Oye. <em>Mira arriba.</em></h1>
-  <p>Esta noche el cielo tiene un mensaje para ti. Bueno… en realidad es mío, pero el cielo me lo está guardando.</p>
+  <div class="moon">☕</div>
+  <h1>Buenos días. <em>Mira arriba.</em></h1>
+  <p>Antes de que salga el sol por Montjuïc, al cielo de Poble Sec le quedan unas estrellas. Y un mensaje para ti. Bueno… es mío, pero el cielo me lo estaba guardando.</p>
   <button class="btn" id="startBtn">A ver, enséñamelo</button>
 </section>
 
 <section class="screen" id="sky">
   <div class="caption">
     <h1 id="capTitle">Une las estrellas</h1>
-    <p id="capText">Toca la que brilla. Luego la siguiente. Sin prisa.</p>
+    <p id="capText">Toca la que brilla. Luego la siguiente. Sin prisa, que el sol espera.</p>
   </div>
 
   <div class="stage">
@@ -201,8 +256,8 @@
   </div>
 
   <div class="ending" id="ending">
-    <p style="margin:0 auto 4px">No sé dibujar, así que he tirado de estrellas ✨<br>Pero esto va en serio:</p>
     <div class="ticket">
+      <p style="margin:0 auto 10px; color:var(--cream); font-size:.95rem">No sé dibujar, así que he tirado de estrellas ✨<br>Pero esto va en serio:</p>
       <small>VALE POR</small>
       <b>Un ramo de verdad + una cena conmigo</b>
       <span>Caduca: nunca · Intransferible · Sin letra pequeña</span><br>
@@ -235,6 +290,36 @@ function shootingStar() {
   setTimeout(() => s.remove(), 1200);
 }
 setInterval(() => Math.random() < .5 && shootingStar(), 3500);
+
+/* ---------- tejados de Poble Sec ---------- */
+(() => {
+  let seed = 7;
+  const r = (a, b) => { seed = (seed * 9301 + 49297) % 233280; return a + seed / 233280 * (b - a); };
+  const R = $("roofs");
+  let x = -4, blocks = [];
+  while (x < 404) {
+    const w = r(26, 46), h = r(38, 66), top = 200 - h;
+    const g = mk("g", {}, R);
+    mk("rect", { x, y: top, width: w + .5, height: h, class: "front" }, g);
+    if (r(0, 1) < .5) mk("rect", { x: x + r(4, w - 14), y: top - 7, width: 9, height: 7, class: "front" }, g);        // terrat
+    if (r(0, 1) < .5) mk("rect", { x: x + r(3, w - 6), y: top - 13, width: .8, height: 13, class: "front" }, g);      // antena
+    for (let fy = top + 8; fy < 192; fy += 12)                                                                     // ventanas + balcones
+      for (let fx = x + 5; fx < x + w - 6; fx += 9) {
+        if (r(0, 1) < .3) mk("rect", { x: fx, y: fy, width: 3.4, height: 5, class: "win" }, g);
+        if (r(0, 1) < .45) mk("rect", { x: fx - 1.2, y: fy + 5, width: 5.8, height: 1, class: "front", opacity: .9 }, g);
+      }
+    blocks.push([x, w, top]);
+    x += w;
+  }
+  // ropa tendida entre dos terrados
+  const [a, b] = [blocks[2], blocks[3]];
+  const x1 = a[0] + a[1] - 6, x2 = b[0] + 8, y = Math.min(a[2], b[2]) - 4;
+  mk("path", { d: `M${x1} ${y} Q${(x1 + x2) / 2} ${y + 4} ${x2} ${y}`, stroke: "#0c0e24", "stroke-width": .6, fill: "none" }, R);
+  ["#ef8d6f", "#f7ecd8", "#8fae8b", "#f3cf7a"].forEach((c, i) => {
+    const cx = x1 + (x2 - x1) * (.2 + i * .2);
+    mk("rect", { x: cx - 2, y: y + 1.5 + Math.sin((i + 1) / 5 * Math.PI) * 2, width: 4, height: 5, rx: .6, fill: c, opacity: .85 }, R);
+  });
+})();
 
 /* ---------- constelación en forma de corazón ---------- */
 const heartPt = t => [50 + 2.5 * 16 * Math.sin(t) ** 3,
@@ -270,7 +355,7 @@ function buildSky() {
     return { dot, halo };
   });
   step = 0;
-  setCaption("Une las estrellas", "Toca la que brilla. Luego la siguiente. Sin prisa.");
+  setCaption("Une las estrellas", "Toca la que brilla. Luego la siguiente. Sin prisa, que el sol espera.");
   mark();
 }
 
@@ -303,9 +388,10 @@ function tap(i) {
 /* ---------- final: el corazón se enciende y llegan ellos dos ---------- */
 function finale() {
   setCaption("Ahí está.", "");
+  document.body.classList.add("morning");
   $("heartFill").classList.add("on");
   requestAnimationFrame(() => $("svg").classList.add("grow"));
-  setTimeout(() => setCaption("Para ti.", "Con todo lo que tengo, que hoy son catorce estrellas."), 2800);
+  setTimeout(() => setCaption("Buenos días, guapa ☀️", "Las últimas catorce estrellas de la noche eran para ti."), 2800);
   setTimeout(() => $("ending").classList.add("on"), 3800);
 }
 
